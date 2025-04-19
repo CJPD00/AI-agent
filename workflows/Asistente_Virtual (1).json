@@ -1,0 +1,168 @@
+{
+  "name": "Asistente Virtual",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "ask",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        20,
+        -400
+      ],
+      "id": "16a00035-71f7-4869-9790-47ca1e76299d",
+      "name": "Webhook",
+      "webhookId": "c64634fa-2b34-4149-9a74-5c922d7d19c5"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        300,
+        -320
+      ],
+      "id": "58df0225-e780-4c24-ae41-4c9f5c1e4fb1",
+      "name": "AI Agent",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "toolDescription": "util para bucar libros",
+        "url": "http://backend:7013/books/search "
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [
+        860,
+        -100
+      ],
+      "id": "1bac2596-e78e-4ee5-a388-7cbc514fd710",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "toolDescription": "ultimos titulares de hacker news",
+        "url": "http://backend:7013/headlines"
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [
+        720,
+        40
+      ],
+      "id": "b6846d0e-0d90-4ac1-b85e-c3117f94b458",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $input.allData }} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        680,
+        -420
+      ],
+      "id": "8f3b54df-f469-4680-b616-c2136f85e30f",
+      "name": "Respond to Webhook",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        180,
+        -40
+      ],
+      "id": "0e367a1e-f880-4be7-ad09-3b05f8b73601",
+      "name": "Ollama Chat Model",
+      "credentials": {
+        "ollamaApi": {
+          "id": "6wtVGnx7qjRmBuZo",
+          "name": "Ollama account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "013ff39e-1460-4f71-84bd-975c3f881172",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "7fc087a5d8b1ea23387935e31c96ebb728eb9b58cb88ee0f0c1300d3db49a6f4"
+  },
+  "id": "dP0qL0Tsdv6b9VwB",
+  "tags": []
+}

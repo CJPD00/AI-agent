@@ -1,0 +1,95 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  selenium:
+    image: selenium/standalone-chrome:latest
+    ports:
+      - "4444:4444"
+    shm_size: "2gb"
+
+  backend:
+    build:
+      context: ./backend/ai-sytem-backend
+      dockerfile: Dockerfile
+    ports:
+      - "18000:7013"
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REMOTE_DRIVER_URL=http://selenium:4444/wd/hub
+    depends_on:
+      - redis
+      - selenium
+    volumes:
+      - ./backend/ai-sytem-backend:/app
+    command: poetry run start
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - n8n
+    volumes:
+      - ./frontend:/app # Monta el código fuente del frontend para desarrollo (opcional)
+
+  n8n:
+    image: n8nio/n8n
+    ports:
+      - "5678:5678"
+    # environment:
+    #   - N8N_HOST=localhost
+    #   - N8N_PORT=5678
+    #   - N8N_PROTOCOL=http
+    #   - N8N_BASIC_AUTH_ACTIVE=true
+    #   - N8N_BASIC_AUTH_USER=n8nuser
+    #   - N8N_BASIC_AUTH_PASSWORD=n8npassword
+    #   - DB_TYPE=none
+    #   - REDIS_HOST=redis
+    #   - REDIS_PORT=6379
+    volumes:
+      - n8n_data:/home/node/.n8n
+      - ./workflows:/home/node/.n8n/workflows
+    depends_on:
+      - redis
+      - backend
+     # - ollama 
+
+  init-caller:
+    image: curlimages/curl:latest
+    command: >
+      sh -c '
+      RETRIES=5;
+      DELAY=5;
+      for i in $(seq 1 $RETRIES); do
+        echo "Attempt $i to connect to backend...";
+        curl -X POST http://backend:7013/init && exit 0;
+        sleep $DELAY;
+      done;
+      echo "Failed to connect to backend after $RETRIES attempts.";
+      exit 1;
+      '
+    depends_on:
+      - backend
+    restart: on-failure
+
+  # ollama:
+  #   image: ollama/ollama:latest
+  #   ports:
+  #     - "11434:11434" 
+  #   volumes:
+  #     - ollama_data:/root/.ollama 
+
+volumes:
+  redis_data:
+  n8n_data:
+  #ollama_data: 

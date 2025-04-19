@@ -1,0 +1,49 @@
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.python-version
+env/
+venv/
+instance/
+.env
+.venv
+__pycache__/
+*.egg-info
+.pytest_cache/
+.coverage
+*.swp
+~$*
+*.log
+*.sqlite
+
+# Poetry
+poetry.lock
+
+# Node.js
+node_modules/
+package-lock.json
+yarn.lock
+npm-debug.log*
+yarn-error.log*
+.pnp
+.pnp.js
+
+# Docker
+.dockerignore
+docker-compose.override.yml
+docker-compose.yml.backup
+
+# n8n
+.n8n/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# vscode
+.vscode
+
+# Vite
+dist/

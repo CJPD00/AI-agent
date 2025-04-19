@@ -1,0 +1,8 @@
+
+POST http://localhost:8000/init HTTP/1.1
+
+###
+GET http://localhost:7013/books/search HTTP/1.1
+
+###
+GET http://localhost:18000/headlines HTTP/1.1
