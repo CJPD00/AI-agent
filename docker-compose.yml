@@ -43,26 +43,18 @@ services:
       - ./frontend:/app # Monta el código fuente del frontend para desarrollo (opcional)
 
   n8n:
-    image: n8nio/n8n
+    build:
+      context: ./n8n
+      dockerfile: Dockerfile
     ports:
       - "5678:5678"
-    # environment:
-    #   - N8N_HOST=localhost
-    #   - N8N_PORT=5678
-    #   - N8N_PROTOCOL=http
-    #   - N8N_BASIC_AUTH_ACTIVE=true
-    #   - N8N_BASIC_AUTH_USER=n8nuser
-    #   - N8N_BASIC_AUTH_PASSWORD=n8npassword
-    #   - DB_TYPE=none
-    #   - REDIS_HOST=redis
-    #   - REDIS_PORT=6379
+    environment:
+      - N8N_AUTOLOAD_WORKFLOWS=true
     volumes:
       - n8n_data:/home/node/.n8n
-      - ./workflows:/home/node/.n8n/workflows
     depends_on:
       - redis
       - backend
-     # - ollama 
 
   init-caller:
     image: curlimages/curl:latest
@@ -92,4 +84,4 @@ services:
 volumes:
   redis_data:
   n8n_data:
-  #ollama_data: 
+  #ollama_data:
