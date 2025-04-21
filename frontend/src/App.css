@@ -18,8 +18,9 @@ h1 {
   position: absolute;
   bottom: 0;
   margin-bottom: 20px;
-  width: 95%;
+  width: 90%;
   max-width: 500px;
+  vertical-align:middle;
 }
 
 .query-input {
@@ -28,11 +29,12 @@ h1 {
   border: 1px solid #2c3e50;
   border-radius: 5px 0 0 5px;
   resize: none;
-  transition: height 0.3s ease-in-out;
   font-size: 16px;
   outline: none;
   background-color: #2c3e50;
   color: #87ceeb;
+  overflow-y: auto;
+  max-height: 100px;
 }
 
 .submit-button {
@@ -136,8 +138,8 @@ h1 {
 
 /* Record Button Styles */
 .record-button {
-  width: 70px;
-  height: 70px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   background-color: #dc3545;
   border: none;
@@ -147,8 +149,11 @@ h1 {
   align-items: center;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   transition: background-color 0.3s ease;
-  position: absolute;
+  /* position: absolute; */
   bottom: 100px;
+  margin-left: 20px;
+  margin-top: 10px;
+  vertical-align: middle;
 }
 
 .record-button:hover {
@@ -160,8 +165,8 @@ h1 {
 }
 
 .record-icon {
-  width: 30px;
-  height: 30px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
   background-color: white;
 }
@@ -174,14 +179,14 @@ h1 {
 @keyframes pulse {
   0% {
     transform: scale(1);
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 10px rgba(128, 128, 128, 0.5);
   }
   50% {
     transform: scale(1.1);
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0 20px rgba(128, 128, 128, 0.7);
   }
   100% {
     transform: scale(1);
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 10px rgba(128, 128, 128, 0.5);
   }
 }

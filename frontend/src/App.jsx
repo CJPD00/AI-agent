@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./App.css"; // Importa tu archivo de estilos CSS
 import axios from "axios";
 import { handleTextareaResize } from "./helpers/app/handleTextareaResize";
+import { N8N_HOST } from "../env";
 
 function App() {
   const [query, setQuery] = useState("");
@@ -9,9 +10,9 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [transcript, setTranscript] = useState("");
+
   const [isListening, setIsListening] = useState(false);
   const [recognition, setRecognition] = useState(null);
-  //const textareaRef = useRef(null);
 
   useEffect(() => {
     if ("webkitSpeechRecognition" in window) {
@@ -85,7 +86,7 @@ function App() {
     }
 
     try {
-      const result = await axios.post("http://n8n:5678/webhook/ask", {
+      const result = await axios.post(`${N8N_HOST}`, {
         query: query,
       });
       console.log(result);
@@ -137,7 +138,7 @@ function App() {
     }
 
     try {
-      const result = await axios.post("http://n8n:5678/webhook/ask", {
+      const result = await axios.post(`${N8N_HOST}`, {
         query: transcript,
       });
       setResponse(result.data.output);
@@ -175,7 +176,6 @@ function App() {
     document.querySelector(".query-input").style.height = "auto";
   };
 
-
   return (
     <div className="container">
       <h1>Asistente Virtual</h1>
@@ -200,17 +200,22 @@ function App() {
           placeholder="Escribe tu consulta aquí (ej. Buscar libros de ciencia ficción)"
           disabled={isListening}
         />
-        <button type="submit" disabled={loading || isListening} className="submit-button">
+        <button
+          type="submit"
+          disabled={loading || isListening}
+          className="submit-button"
+        >
           {loading ? "Cargando..." : "Enviar"}
+        </button>
+        <button
+          className={`record-button ${isListening ? "recording" : ""}`}
+          onClick={toggleListening}
+          title={isListening ? "Detener Grabación" : "Iniciar Grabación"}
+        >
+          <div className="record-icon"></div>
         </button>
       </form>
       {error && <div className="error-message">Error: {error}</div>}
-      <button
-        className={`record-button ${isListening ? "recording" : ""}`}
-        onClick={toggleListening}
-      >
-        <div className="record-icon"></div>
-      </button>
     </div>
   );
 }
