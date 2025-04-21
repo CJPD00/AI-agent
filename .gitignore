@@ -4,10 +4,10 @@ __pycache__/
 *.pyc
 *.pyo
 .python-version
-env/
+ env/
 venv/
 instance/
-.env
+# .env
 .venv
 __pycache__/
 *.egg-info
