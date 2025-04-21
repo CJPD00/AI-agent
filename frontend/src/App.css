@@ -134,14 +134,54 @@ h1 {
   width: 100%;
 }
 
-/* @media (max-width: 768px) {
-  .response-area {
-    width: 90%;
-  }
+/* Record Button Styles */
+.record-button {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background-color: #dc3545;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease;
+  position: absolute;
+  bottom: 100px;
+}
 
-  .query-area {
-    width: 100%;
-    margin-left: 0;
-    margin-right: 0;
+.record-button:hover {
+  background-color: #c82333;
+}
+
+.record-button:focus {
+  outline: none;
+}
+
+.record-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: white;
+}
+
+.record-button.recording {
+  background-color: #c82333;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   }
-} */
+  50% {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+}

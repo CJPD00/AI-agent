@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css"; // Importa tu archivo de estilos CSS
 import axios from "axios";
 import { handleTextareaResize } from "./helpers/app/handleTextareaResize";
@@ -8,6 +8,57 @@ function App() {
   const [response, setResponse] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [transcript, setTranscript] = useState("");
+  const [isListening, setIsListening] = useState(false);
+  const [recognition, setRecognition] = useState(null);
+  //const textareaRef = useRef(null);
+
+  useEffect(() => {
+    if ("webkitSpeechRecognition" in window) {
+      const newRecognition = new window.webkitSpeechRecognition();
+      newRecognition.continuous = true;
+      newRecognition.interimResults = true;
+      newRecognition.lang = "es-ES";
+
+      newRecognition.onresult = (event) => {
+        let finalTranscript = "";
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          finalTranscript += event.results[i][0].transcript;
+        }
+        setTranscript(finalTranscript);
+      };
+
+      newRecognition.onstart = () => {
+        setIsListening(true);
+      };
+
+      newRecognition.onend = () => {
+        setIsListening(false);
+      };
+
+      newRecognition.onerror = (event) => {
+        console.error("Speech recognition error:", event.error);
+        setIsListening(false);
+      };
+
+      setRecognition(newRecognition);
+    } else {
+      console.log("Speech Recognition Not Available");
+    }
+  }, []);
+
+  const toggleListening = () => {
+    if (isListening) {
+      if (recognition) {
+        recognition.stop();
+        handleSubmitWithTranscript();
+      }
+    } else {
+      if (recognition) {
+        recognition.start();
+      }
+    }
+  };
 
   const handleInputChange = (event) => {
     setQuery(event.target.value);
@@ -34,14 +85,14 @@ function App() {
     }
 
     try {
-       const result = await axios.post("http://n8n:5678/webhook/ask", {
+      const result = await axios.post("http://n8n:5678/webhook/ask", {
         query: query,
       });
       console.log(result);
       // const result =
       //   "Lorem ipsum es el texto que se usa habitualmente en diseño gráfico en demostraciones de tipografías o de borradores de diseño para probar el diseño visual antes de insertar el texto";
       setResponse(result.data.output);
-      console.log(response)
+      console.log(response);
       //setResponse(result);
       const responseArea = document.querySelector(".response-areas");
       responseArea.scrollIntoView({ behavior: "smooth" });
@@ -76,6 +127,55 @@ function App() {
     document.querySelector(".query-input").style.height = "auto";
   };
 
+  const handleSubmitWithTranscript = async () => {
+    setLoading(true);
+    setError(null);
+
+    if (!transcript.trim()) {
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const result = await axios.post("http://n8n:5678/webhook/ask", {
+        query: transcript,
+      });
+      setResponse(result.data.output);
+
+      const responseArea = document.querySelector(".response-areas");
+      responseArea.scrollIntoView({ behavior: "smooth" });
+
+      const newResponseArea = document.createElement("div");
+      newResponseArea.className = "response-area";
+      newResponseArea.innerHTML = `
+        <h2>Respuesta:</h2>
+        <pre class="response-output">${response}</pre>
+      `;
+
+      const queryArea = document.createElement("div");
+      queryArea.className = "query-area";
+      queryArea.innerHTML = `
+        <span className="query-text">${transcript}</span>
+      `;
+
+      responseArea.appendChild(queryArea);
+      responseArea.appendChild(newResponseArea);
+      responseArea.scrollTo({
+        top: responseArea.scrollHeight,
+        behavior: "smooth",
+      });
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+
+    setTranscript("");
+    setQuery("");
+    document.querySelector(".query-input").style.height = "auto";
+  };
+
+
   return (
     <div className="container">
       <h1>Asistente Virtual</h1>
@@ -98,12 +198,19 @@ function App() {
           className="query-input"
           rows={3}
           placeholder="Escribe tu consulta aquí (ej. Buscar libros de ciencia ficción)"
+          disabled={isListening}
         />
-        <button type="submit" disabled={loading} className="submit-button">
+        <button type="submit" disabled={loading || isListening} className="submit-button">
           {loading ? "Cargando..." : "Enviar"}
         </button>
       </form>
       {error && <div className="error-message">Error: {error}</div>}
+      <button
+        className={`record-button ${isListening ? "recording" : ""}`}
+        onClick={toggleListening}
+      >
+        <div className="record-icon"></div>
+      </button>
     </div>
   );
 }
