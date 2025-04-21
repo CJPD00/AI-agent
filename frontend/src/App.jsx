@@ -34,12 +34,14 @@ function App() {
     }
 
     try {
-      const result = await axios.post("http://localhost:5678/webhook/ask", {
+       const result = await axios.post("http://localhost:5678/webhook/ask", {
         query: query,
       });
+      console.log(result);
       // const result =
       //   "Lorem ipsum es el texto que se usa habitualmente en diseño gráfico en demostraciones de tipografías o de borradores de diseño para probar el diseño visual antes de insertar el texto";
-      setResponse(JSON.stringify(result.data, null, 2));
+      setResponse(result.data.output);
+      console.log(response)
       //setResponse(result);
       const responseArea = document.querySelector(".response-areas");
       responseArea.scrollIntoView({ behavior: "smooth" });
@@ -48,8 +50,16 @@ function App() {
       newResponseArea.className = "response-area";
       newResponseArea.innerHTML = `
         <h2>Respuesta:</h2>
-        <pre class="response-output">${result}</pre>
+        <pre class="response-output">${response}</pre>
       `;
+
+      const queryArea = document.createElement("div");
+      queryArea.className = "query-area";
+      queryArea.innerHTML = `
+        <span className="query-text">${query}</span>
+      `;
+
+      responseArea.appendChild(queryArea);
       responseArea.appendChild(newResponseArea);
       responseArea.scrollTo({
         top: responseArea.scrollHeight,
@@ -57,7 +67,7 @@ function App() {
       });
     } catch (err) {
       setError(err.message);
-      setResponse("");
+      // setResponse("");
     } finally {
       setLoading(false);
     }

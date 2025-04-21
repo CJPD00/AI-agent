@@ -1,0 +1,178 @@
+{
+  "name": "n8n_workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "modelName": "models/gemini-1.5-flash-8b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        160,
+        200
+      ],
+      "id": "cb736ad0-2616-43b8-917b-543b07078ae6",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "EXT3QvVQySffxVEj",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "Use this tool to get the latest top headlines from Hacker News. Use it when the user asks for current news, tech news, or trending headlines.",
+        "url": "http://backend:7013/headlines",
+        "optimizeResponse": true,
+        "dataField": "headlines"
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [
+        520,
+        300
+      ],
+      "id": "6e9b1691-4e64-4d6b-8689-e6ee8b10b66c",
+      "name": "News"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Use this tool to search for books available in the online store. You can search by book title or book category. Provide the title or category you want to search for.",
+        "url": "http://backend:7013/books/search",
+        "sendQuery": true,
+        "parametersQuery": {
+          "values": [
+            {
+              "name": "title",
+              "valueProvider": "modelOptional"
+            },
+            {
+              "name": "category",
+              "valueProvider": "modelOptional"
+            }
+          ]
+        },
+        "placeholderDefinitions": {
+          "values": [
+            {
+              "name": "title",
+              "description": "The title (or part of the title) of the book to search for",
+              "type": "string"
+            },
+            {
+              "name": "category",
+              "description": "The category of the books to search for (e.g., Science, Fiction, Mystery).",
+              "type": "string"
+            }
+          ]
+        },
+        "optimizeResponse": true,
+        "dataField": "books"
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [
+        720,
+        160
+      ],
+      "id": "f98f92a5-2d67-43cf-816c-a2fb4fd7b1f8",
+      "name": "Book"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "ask",
+        "responseMode": "lastNode",
+        "options": {
+          "rawBody": false
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -200,
+        -80
+      ],
+      "id": "b1c418e8-3f9d-46a9-94b7-76d4c66114dc",
+      "name": "Webhook1",
+      "webhookId": "3c3aaebf-087c-467c-9e5e-d40c840b5d98"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.body.query }}",
+        "options": {
+          "systemMessage": "=Analiza la consulta del usuario y determina si está buscando información sobre libros, titulares de noticias, o ambos. Utiliza las herramientas apropiadas para responder a la consulta."
+        }
+      },
+      "id": "3d8f0c8f-5913-4094-b387-667b22d33a5a",
+      "name": "AI Agent1",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        300,
+        -100
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "News": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Book": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "d58547d1-4e35-4375-b286-4d21ed491969",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "7fc087a5d8b1ea23387935e31c96ebb728eb9b58cb88ee0f0c1300d3db49a6f4"
+  },
+  "id": "dP0qL0Tsdv6b9VwB",
+  "tags": []
+}

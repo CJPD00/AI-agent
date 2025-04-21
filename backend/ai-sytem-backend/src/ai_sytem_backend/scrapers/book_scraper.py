@@ -23,7 +23,7 @@ def generate_book_id(url):
     return hashlib.md5(url.encode()).hexdigest()
 
 
-def scrape_books(max_books=100, price_limit=20):
+def scrape_books(max_books=50, price_limit=20):
     """Scrapea libros de books.toscrape.com y los guarda en Redis."""
     redis_client = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, decode_responses=True)
     base_url = "https://books.toscrape.com/catalogue/"

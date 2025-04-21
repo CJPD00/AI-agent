@@ -76,6 +76,7 @@ h1 {
   align-items: center;
   padding: 20px;
   margin-bottom: 20px;
+  width: 100%;
 }
 
 .response-areas::-webkit-scrollbar {
@@ -105,3 +106,41 @@ h1 {
   font-size: 14px;
   color: #87ceeb;
 }
+
+.response-area {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.query-area {
+  width: 30%;
+  color: #87ceeb;
+  font-size: 14px;
+  margin-right: 10px;
+  margin-left: 45%;
+  background-color: #2c3e50;
+  padding: 20px;
+  border: 1px solid #3b4d64;
+  border-radius: 10px;
+  margin-top: 20px;
+  overflow-wrap: break-word;
+}
+
+.query-text {
+  word-break: break-word;
+  width: 100%;
+}
+
+/* @media (max-width: 768px) {
+  .response-area {
+    width: 90%;
+  }
+
+  .query-area {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+} */

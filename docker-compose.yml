@@ -43,15 +43,14 @@ services:
       - ./frontend:/app # Monta el código fuente del frontend para desarrollo (opcional)
 
   n8n:
-    build:
-      context: ./n8n
-      dockerfile: Dockerfile
+    image: n8nio/n8n
     ports:
       - "5678:5678"
     environment:
       - N8N_AUTOLOAD_WORKFLOWS=true
     volumes:
       - n8n_data:/home/node/.n8n
+      - ./workflows:/home/node/.n8n/workflows
     depends_on:
       - redis
       - backend
