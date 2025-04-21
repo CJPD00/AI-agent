@@ -6,3 +6,11 @@ GET http://localhost:7013/books/search HTTP/1.1
 
 ###
 GET http://localhost:18000/headlines HTTP/1.1
+
+###
+POST https://cjpd.app.n8n.cloud/webhook-test/ask HTTP/1.1
+Content-Type: application/json
+
+{
+    "query":"dame usuarios"
+}
