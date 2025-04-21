@@ -105,6 +105,7 @@ h1 {
   white-space: pre-wrap;
   font-size: 14px;
   color: #87ceeb;
+  border: none;
 }
 
 .response-area {
