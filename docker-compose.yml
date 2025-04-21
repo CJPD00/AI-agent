@@ -54,8 +54,6 @@ services:
       - N8N_BASIC_AUTH_ACTIVE=true
       - N8N_BASIC_AUTH_USER=admin
       - N8N_BASIC_AUTH_PASSWORD=admin
-      - N8N_HOST=n8n
-      - N8N_PORT=5678
       - N8N_ENCRYPTION_KEY=${N8N_ENCRYPTION_KEY}
       - REDIS_HOST=redis
       - REDIS_PORT=6379

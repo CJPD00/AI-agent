@@ -34,7 +34,7 @@ function App() {
     }
 
     try {
-       const result = await axios.post("https://n8n:5678/webhook/ask", {
+       const result = await axios.post("http://localhost:5678/webhook/ask", {
         query: query,
       });
       console.log(result);
