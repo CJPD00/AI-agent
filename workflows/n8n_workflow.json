@@ -100,7 +100,7 @@
         "promptType": "define",
         "text": "={{ $json.body.query }}",
         "options": {
-          "systemMessage": "=Analiza la consulta del usuario y determina si está buscando información sobre libros, titulares de noticias, o ambos. Utiliza las herramientas apropiadas para responder a la consulta.Darle un formato bonito a la salida en texto plano"
+          "systemMessage": "=Analiza la consulta del usuario y determina si está buscando información sobre libros, titulares de noticias, o ambos. Utiliza las herramientas apropiadas para responder a la consulta.Darle un formato bonito a la salida en texto plano. debes de dar toda la informacion de los libros y las noticias q tengas disponible siempre"
         }
       },
       "id": "3d8f0c8f-5913-4094-b387-667b22d33a5a",
