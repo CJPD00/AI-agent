@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   redis:
@@ -48,12 +48,25 @@ services:
       - "5678:5678"
     environment:
       - N8N_AUTOLOAD_WORKFLOWS=true
+      - N8N_BASIC_AUTH_ACTIVE=true
+      - N8N_BASIC_AUTH_USER=admin
+      - N8N_BASIC_AUTH_PASSWORD=admin
+      - N8N_SECURE_COOKIE=false
+      - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
+      - N8n_RUNNERS_ENABLED=true
     volumes:
       - n8n_data:/home/node/.n8n
-      - ./workflows:/home/node/.n8n/workflows
+      - ./workflows:/workflows
     depends_on:
       - redis
       - backend
+    entrypoint: >
+      sh -c "
+        n8n import:workflow --input /workflows/n8n_workflow.json &&
+        n8n import:credentials --input /workflows/n8n_credentials.json &&
+        n8n update:workflow --id m927KcCBR0Gfwx2y --active=true &&
+        n8n start
+      "
 
   init-caller:
     image: curlimages/curl:latest
@@ -76,9 +89,9 @@ services:
   # ollama:
   #   image: ollama/ollama:latest
   #   ports:
-  #     - "11434:11434" 
+  #     - "11434:11434"
   #   volumes:
-  #     - ollama_data:/root/.ollama 
+  #     - ollama_data:/root/.ollama
 
 volumes:
   redis_data:
