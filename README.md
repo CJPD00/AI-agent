@@ -1,4 +1,4 @@
-# AI-Driven System for [Your System's High-Level Purpose]
+# AI-powered system
 
 Este documento proporciona instrucciones para configurar y usar el sistema impulsado por IA.
 
