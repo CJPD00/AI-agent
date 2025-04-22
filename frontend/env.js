@@ -1,1 +1,1 @@
-export const N8N_HOST = "http://localhost:5678/webhook/ask";
+export const N8N_HOST = "/n8n/webhook/ask";

@@ -4,18 +4,10 @@ Este documento proporciona instrucciones para configurar y usar el sistema impul
 
 ## Instrucciones de Configuración
 
-Para ejecutar el sistema, asegúrese de tener Docker y Docker Compose instalados en su máquina. Una vez instalados, navegue al directorio raíz de este proyecto , dentro de la carpeta `frontend` asegurése de tener un archivo env.js con la variable N8N_HOST, si va ejecutar todo de forma local use como valor :
+Para ejecutar el sistema, asegúrese de tener Docker y Docker Compose instalados en su máquina. Una vez instalados, navegue al directorio raíz de este proyecto y ejecute el siguiente comando:
 
 ```bash
-N8N_HOST="http://localhost:5678/webhook/ask"
-```
-
-si no use la direccion url de produccion.
-
-Despues ejecute el siguiente comando en la raíz del proyecto:
-
-```bash
-docker-compose up -d --build
+docker-compose up -d
 ```
 
 ## Este comando hará lo siguiente:
