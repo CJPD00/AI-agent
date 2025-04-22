@@ -34,6 +34,8 @@ docker-compose up -d --build
 
 - El servicio init-caller intentará automáticamente enviar una solicitud POST a http://backend:7013/init poco después de que se inicie el servicio backend, lo que puede realizar tareas de configuración inicial.
 
+Si quieres ejecutar pruebas al backend utiliza el comando `pytest` desde el contenedor backend. 
+
 ## Consultas de Ejemplo
 
 Aquí hay algunos ejemplos de cómo podría interactuar con el sistema:
