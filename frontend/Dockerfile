@@ -8,7 +8,8 @@ RUN npm cache clean --force && npm run build
 # Production Stage
 FROM nginx:alpine
 
-RUN echo "http { \
+RUN rm /etc/nginx/conf.d/default.conf && \
+    echo "http { \
     server { \
         listen 80; \
         server_name localhost; \
