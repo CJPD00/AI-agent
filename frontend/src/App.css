@@ -8,6 +8,14 @@
   min-height: 100vh;
 }
 
+.qa-block {
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
 h1 {
   color: #66d9ef;
   margin-bottom: 20px;

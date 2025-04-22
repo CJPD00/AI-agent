@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import "./App.css"; // Importa tu archivo de estilos CSS
+import React, { useState, useEffect, useRef } from "react";
+import "./App.css";
 import axios from "axios";
 import { handleTextareaResize } from "./helpers/app/handleTextareaResize";
 import { N8N_HOST } from "../env";
@@ -10,9 +10,11 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [transcript, setTranscript] = useState("");
-
   const [isListening, setIsListening] = useState(false);
   const [recognition, setRecognition] = useState(null);
+  const [history, setHistory] = useState([]);
+
+  const endOfResponsesRef = useRef(null);
 
   useEffect(() => {
     if ("webkitSpeechRecognition" in window) {
@@ -29,49 +31,36 @@ function App() {
         setTranscript(finalTranscript);
       };
 
-      newRecognition.onstart = () => {
-        setIsListening(true);
-      };
-
-      newRecognition.onend = () => {
-        setIsListening(false);
-      };
-
+      newRecognition.onstart = () => setIsListening(true);
+      newRecognition.onend = () => setIsListening(false);
       newRecognition.onerror = (event) => {
         console.error("Speech recognition error:", event.error);
         setIsListening(false);
       };
 
       setRecognition(newRecognition);
-    } else {
-      console.log("Speech Recognition Not Available");
     }
   }, []);
 
+  useEffect(() => {
+    endOfResponsesRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [history]);
+
   const toggleListening = () => {
     if (isListening) {
-      if (recognition) {
-        recognition.stop();
-        handleSubmitWithTranscript();
-      }
+      recognition?.stop();
+      handleSubmitWithTranscript();
     } else {
-      if (recognition) {
-        recognition.start();
-      }
+      recognition?.start();
     }
   };
 
-  const handleInputChange = (event) => {
-    setQuery(event.target.value);
-  };
+  const handleInputChange = (event) => setQuery(event.target.value);
 
   const handleKeyDown = (event) => {
     if (event.ctrlKey && event.key === "Enter") {
       event.preventDefault();
-      if (!query.trim()) {
-        return;
-      }
-      handleSubmit(event);
+      if (query.trim()) handleSubmit(event);
     }
   };
 
@@ -86,40 +75,13 @@ function App() {
     }
 
     try {
-      const result = await axios.post(`${N8N_HOST}`, {
-        query: query,
-      });
-      console.log(result);
-      // const result =
-      //   "Lorem ipsum es el texto que se usa habitualmente en diseño gráfico en demostraciones de tipografías o de borradores de diseño para probar el diseño visual antes de insertar el texto";
-      setResponse(result.data.output);
-      console.log(response);
-      //setResponse(result);
-      const responseArea = document.querySelector(".response-areas");
-      responseArea.scrollIntoView({ behavior: "smooth" });
+      const result = await axios.post(`${N8N_HOST}`, { query });
+      const output = result.data.output;
 
-      const newResponseArea = document.createElement("div");
-      newResponseArea.className = "response-area";
-      newResponseArea.innerHTML = `
-        <h2>Respuesta:</h2>
-        <pre class="response-output">${response}</pre>
-      `;
-
-      const queryArea = document.createElement("div");
-      queryArea.className = "query-area";
-      queryArea.innerHTML = `
-        <span className="query-text">${query}</span>
-      `;
-
-      responseArea.appendChild(queryArea);
-      responseArea.appendChild(newResponseArea);
-      responseArea.scrollTo({
-        top: responseArea.scrollHeight,
-        behavior: "smooth",
-      });
+      setResponse(output);
+      setHistory((prev) => [...prev, { query, response: output }]);
     } catch (err) {
       setError(err.message);
-      // setResponse("");
     } finally {
       setLoading(false);
     }
@@ -138,33 +100,11 @@ function App() {
     }
 
     try {
-      const result = await axios.post(`${N8N_HOST}`, {
-        query: transcript,
-      });
-      setResponse(result.data.output);
+      const result = await axios.post(`${N8N_HOST}`, { query: transcript });
+      const output = result.data.output;
 
-      const responseArea = document.querySelector(".response-areas");
-      responseArea.scrollIntoView({ behavior: "smooth" });
-
-      const newResponseArea = document.createElement("div");
-      newResponseArea.className = "response-area";
-      newResponseArea.innerHTML = `
-        <h2>Respuesta:</h2>
-        <pre class="response-output">${response}</pre>
-      `;
-
-      const queryArea = document.createElement("div");
-      queryArea.className = "query-area";
-      queryArea.innerHTML = `
-        <span className="query-text">${transcript}</span>
-      `;
-
-      responseArea.appendChild(queryArea);
-      responseArea.appendChild(newResponseArea);
-      responseArea.scrollTo({
-        top: responseArea.scrollHeight,
-        behavior: "smooth",
-      });
+      setResponse(output);
+      setHistory((prev) => [...prev, { query: transcript, response: output }]);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -180,13 +120,19 @@ function App() {
     <div className="container">
       <h1>Asistente Virtual</h1>
 
-      <div class="response-areas">
-        {/* {response && (
-          <div className="response-area">
-            <h2>Respuesta:</h2>
-            <pre className="response-output">{response}</pre>
+      <div className="response-areas">
+        {history.map((item, index) => (
+          <div key={index} className="qa-block">
+            <div className="query-area">
+              <span className="query-text">{item.query}</span>
+            </div>
+            <div className="response-area">
+              <h2>Respuesta:</h2>
+              <pre className="response-output">{item.response}</pre>
+            </div>
           </div>
-        )} */}
+        ))}
+        <div ref={endOfResponsesRef} />
       </div>
 
       <form onSubmit={handleSubmit} className="input-area">
@@ -208,6 +154,7 @@ function App() {
           {loading ? "Cargando..." : "Enviar"}
         </button>
         <button
+          type="button"
           className={`record-button ${isListening ? "recording" : ""}`}
           onClick={toggleListening}
           title={isListening ? "Detener Grabación" : "Iniciar Grabación"}
@@ -215,6 +162,7 @@ function App() {
           <div className="record-icon"></div>
         </button>
       </form>
+
       {error && <div className="error-message">Error: {error}</div>}
     </div>
   );
