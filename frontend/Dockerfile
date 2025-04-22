@@ -16,7 +16,7 @@ RUN rm /etc/nginx/conf.d/default.conf && \
 \
         location / { \
             root   /usr/share/nginx/html; \
-            index  index.html index.htm; \
+            index  index.html; \
             try_files \$uri \$uri/ /index.html; \
         } \
 \
