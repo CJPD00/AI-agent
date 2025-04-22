@@ -1,4 +1,4 @@
-# AI-powered system
+# AI-Powered System
 
 Este documento proporciona instrucciones para configurar y usar el sistema impulsado por IA.
 
