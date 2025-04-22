@@ -21,6 +21,7 @@ h1 {
   width: 90%;
   max-width: 500px;
   vertical-align:middle;
+  margin-left: 50px;
 }
 
 .query-input {
@@ -151,7 +152,7 @@ h1 {
   transition: background-color 0.3s ease;
   /* position: absolute; */
   bottom: 100px;
-  margin-left: 20px;
+  margin-left: 5px;
   margin-top: 10px;
   vertical-align: middle;
 }
