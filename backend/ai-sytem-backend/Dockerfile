@@ -15,6 +15,8 @@ RUN poetry install --no-root
 COPY src ./src
 COPY tests ./tests
 
+RUN poetry add pytest-asyncio
+
 # Añade el directorio src al PYTHONPATH
 ENV PYTHONPATH=/app/src
 
