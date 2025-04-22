@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./App.css";
 import axios from "axios";
 import { handleTextareaResize } from "./helpers/app/handleTextareaResize";
@@ -13,6 +13,8 @@ function App() {
   const [isListening, setIsListening] = useState(false);
   const [recognition, setRecognition] = useState(null);
   const [history, setHistory] = useState([]);
+
+  const endOfResponsesRef = useRef(null);
 
   useEffect(() => {
     if ("webkitSpeechRecognition" in window) {
@@ -37,10 +39,12 @@ function App() {
       };
 
       setRecognition(newRecognition);
-    } else {
-      console.log("Speech Recognition Not Available");
     }
   }, []);
+
+  useEffect(() => {
+    endOfResponsesRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [history]);
 
   const toggleListening = () => {
     if (isListening) {
@@ -118,7 +122,7 @@ function App() {
 
       <div className="response-areas">
         {history.map((item, index) => (
-          <div key={index}>
+          <div key={index} className="qa-block">
             <div className="query-area">
               <span className="query-text">{item.query}</span>
             </div>
@@ -128,6 +132,7 @@ function App() {
             </div>
           </div>
         ))}
+        <div ref={endOfResponsesRef} />
       </div>
 
       <form onSubmit={handleSubmit} className="input-area">
