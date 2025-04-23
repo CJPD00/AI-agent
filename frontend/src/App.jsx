@@ -58,7 +58,14 @@ function App() {
   const handleInputChange = (event) => setQuery(event.target.value);
 
   const handleKeyDown = (event) => {
+
     if (event.ctrlKey && event.key === "Enter") {
+      setQuery(query + "\n");
+      event.preventDefault();
+      return;
+    }
+
+    if (event.key === "Enter") {
       event.preventDefault();
       if (query.trim()) handleSubmit(event);
     }
