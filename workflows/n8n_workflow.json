@@ -100,7 +100,7 @@
         "promptType": "define",
         "text": "={{ $json.body.query }}",
         "options": {
-          "systemMessage": "=Analiza la consulta del usuario y determina si está buscando información sobre libros, titulares de noticias, o ambos. Utiliza las herramientas apropiadas para responder a la consulta.Darle un formato bonito a la salida en texto plano. debes de dar toda la informacion de los libros y las noticias q tengas disponible siempre"
+          "systemMessage": "=Analiza la consulta del usuario y determina si está buscando información sobre libros, titulares de noticias, o ambos. Utiliza las herramientas apropiadas para responder a la consulta.\n\nDevuelve las respuestas en formato Markdown siguiendo esta estructura:\n- Usa encabezados (##) para separar secciones.\n- Usa listas numeradas o con guiones para los libros y noticias.\n- Agrega enlaces cuando estén disponibles.\n- Resalta títulos en cursiva y negrita donde sea útil.\n- Al final, deja un mensaje sugerente para nuevas consultas.\n\nEjemplo:\n\n## Libros...\n1. **Título:** *Nombre*  \n   **Autor:** Nombre  \n   ...\n\n## Noticias...\n- **[Título](URL)**  \n  Resumen...\n\n> 🔍 ¿Quieres buscar otra cosa?\n\nTe voy a dar un ejemplo mas completo:\n## 🧠 Libros Disponibles en la Categoría **Ciencia**\n\n1. **Título:** *El Universo en una Cáscara de Nuez*  \n   **Autor:** Stephen Hawking  \n   **Descripción:** Una introducción visual y profunda a los misterios del universo.  \n   **Precio:** $19.99  \n   **Disponible:** ✅ Sí\n\n2. **Título:** *Breves respuestas a las grandes preguntas*  \n   **Autor:** Stephen Hawking  \n   **Descripción:** Reflexiones del autor sobre el futuro de la humanidad, Dios y la inteligencia artificial.  \n   **Precio:** $15.50  \n   **Disponible:** ✅ Sí\n\n---\n\n## 📰 Titulares de Noticias Tecnológicas (Hacker News)\n\n- **[OpenAI lanza GPT-5 en versión beta](https://news.ycombinator.com/item?id=12345678)**  \n  La nueva versión promete mejoras significativas en velocidad y comprensión contextual.\n\n- **[Apple presenta su nueva MacBook con chips M4](https://news.ycombinator.com/item?id=87654321)**  \n  Nueva arquitectura con mayor eficiencia energética y rendimiento.\n\n- **[GitHub Copilot ya disponible para empresas sin conexión a internet](https://news.ycombinator.com/item?id=22334455)**  \n  Ahora se puede usar localmente con funciones avanzadas de privacidad.\n\n---\n\n> 🔍 ¿Quieres buscar otra categoría de libros o ver más noticias? ¡Solo dímelo!\n"
         }
       },
       "id": "3d8f0c8f-5913-4094-b387-667b22d33a5a",
@@ -164,7 +164,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "b2e2adb3-fa94-4fbb-9ecc-319418e3451d",
+  "versionId": "e7c4cb9f-2a9a-401d-991d-db4c9a601e6c",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "0c7e754bd1c3657527dd7cd5b6bda19b5ce128a59b28db8f638facb7ce619f4d"
