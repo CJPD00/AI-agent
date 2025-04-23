@@ -11,8 +11,10 @@
   },
   "dependencies": {
     "axios": "1.8.4",
+    "github-markdown-css": "5.8.1",
     "react": "19.0.0",
-    "react-dom": "19.0.0"
+    "react-dom": "19.0.0",
+    "react-markdown": "10.1.0"
   },
   "devDependencies": {
     "@eslint/js": "9.22.0",

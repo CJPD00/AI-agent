@@ -3,6 +3,7 @@ import "./App.css";
 import axios from "axios";
 import { handleTextareaResize } from "./helpers/app/handleTextareaResize";
 import { N8N_HOST } from "../env";
+import ReactMarkdown from "react-markdown";
 
 function App() {
   const [query, setQuery] = useState("");
@@ -58,7 +59,6 @@ function App() {
   const handleInputChange = (event) => setQuery(event.target.value);
 
   const handleKeyDown = (event) => {
-
     if (event.ctrlKey && event.key === "Enter") {
       setQuery(query + "\n");
       event.preventDefault();
@@ -135,7 +135,9 @@ function App() {
             </div>
             <div className="response-area">
               <h2>Respuesta:</h2>
-              <pre className="response-output">{item.response}</pre>
+              <div className="response-output markdown-body">
+                <ReactMarkdown>{item.response}</ReactMarkdown>
+              </div>
             </div>
           </div>
         ))}
