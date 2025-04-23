@@ -1,3 +1,12 @@
+@import 'github-markdown-css/github-markdown-light.css';
+
+.markdown-body {
+  padding: 1rem;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
 .container {
   font-family: sans-serif;
   display: flex;
