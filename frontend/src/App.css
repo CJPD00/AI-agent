@@ -126,6 +126,7 @@ h1 {
   font-size: 14px;
   color: #87ceeb;
   border: none;
+  width: 100%;
 }
 
 .response-area {
