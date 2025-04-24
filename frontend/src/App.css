@@ -22,3 +22,9 @@
     box-shadow: 0 0 10px rgba(128, 128, 128, 0.5);
   }
 }
+
+.record-button:hover,
+.input-area button:hover {
+  transform: scale(1.1);
+  transition: transform 0.2s ease-in-out;
+}
