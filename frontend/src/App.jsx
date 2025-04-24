@@ -135,6 +135,12 @@ function App() {
               <div className="response-output markdown-body bg-gray-700 p-2 rounded-md whitespace-pre-wrap text-sm text-sky-300 border-none w-full">
                 <ReactMarkdown>{item.response}</ReactMarkdown>
               </div>
+              <button
+                className="copy-button bg-sky-700 text-white border-none rounded-md cursor-pointer w-20 h-8 flex items-center justify-center transition-colors duration-300 disabled:bg-gray-700"
+                onClick={() => navigator.clipboard.writeText(item.response)}
+              >
+                Copiar
+              </button>
             </div>
           </div>
         ))}
