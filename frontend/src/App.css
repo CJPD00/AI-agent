@@ -4,6 +4,10 @@
 
 @import 'github-markdown-css/github-markdown-light.css';
 
+.response-areas::-webkit-scrollbar {
+  display: none;
+}
+
 .record-button.recording {
   animation: pulse 1s infinite;
 }
