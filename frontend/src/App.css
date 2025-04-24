@@ -1,197 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @import 'github-markdown-css/github-markdown-light.css';
-
-.markdown-body {
-  padding: 1rem;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  overflow-x: auto;
-}
-
-.container {
-  font-family: sans-serif;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  background-color: #1a1d23;
-  min-height: 100vh;
-}
-
-.qa-block {
-  width: 100%;
-  max-width: 800px;
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 20px;
-}
-
-h1 {
-  color: #66d9ef;
-  margin-bottom: 20px;
-}
-
-.input-area {
-  display: flex;
-  position: absolute;
-  bottom: 0;
-  margin-bottom: 20px;
-  width: 90%;
-  max-width: 500px;
-  vertical-align:middle;
-  margin-left: 50px;
-}
-
-.query-input {
-  flex-grow: 1;
-  padding: 10px;
-  border: 1px solid #2c3e50;
-  border-radius: 5px 0 0 5px;
-  resize: none;
-  font-size: 16px;
-  outline: none;
-  background-color: #2c3e50;
-  color: #87ceeb;
-  overflow-y: auto;
-  max-height: 100px;
-}
-
-.submit-button {
-  background-color: #3b4d64;
-  /* Azul claro */
-  color: #fff;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 0 5px 5px 0;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s ease;
-}
-
-.submit-button:hover {
-  background-color: #3498db;
-  /* Azul oscuro claro */
-}
-
-.submit-button:disabled {
-  background-color: #2c3e50;
-  /* Azul oscuro */
-  cursor: not-allowed;
-}
-
-.error-message {
-  color: #f00;
-  margin-top: 10px;
-  position: absolute;
-  bottom: 0;
-}
-
-.response-areas {
-  overflow-y: auto;
-  /* max-height: 350px; */
-  height: 58vh;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  margin-bottom: 20px;
-  width: 100%;
-}
 
 .response-areas::-webkit-scrollbar {
   display: none;
 }
 
-.response-area {
-  background-color: #2c3e50;
-  width: 65%;
-  padding: 20px;
-  border: 1px solid #3b4d64;
-  border-radius: 10px;
-  margin-top: 20px;
-}
-
-.response-area h2 {
-  color: #66d9ef;
-  margin-top: 0;
-  margin-bottom: 10px;
-}
-
-.response-output {
-  background-color: #2c3e50;
-  padding: 10px;
-  border-radius: 3px;
-  white-space: pre-wrap;
-  font-size: 14px;
-  color: #87ceeb;
-  border: none;
-  width: 100%;
-}
-
-.response-area {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-start;
-}
-
-.query-area {
-  width: 30%;
-  color: #87ceeb;
-  font-size: 14px;
-  margin-right: 10px;
-  margin-left: 45%;
-  background-color: #2c3e50;
-  padding: 20px;
-  border: 1px solid #3b4d64;
-  border-radius: 10px;
-  margin-top: 20px;
-  overflow-wrap: break-word;
-}
-
-.query-text {
-  word-break: break-word;
-  width: 100%;
-}
-
-/* Record Button Styles */
-.record-button {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background-color: #dc3545;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  transition: background-color 0.3s ease;
-  /* position: absolute; */
-  bottom: 100px;
-  margin-left: 5px;
-  margin-top: 10px;
-  vertical-align: middle;
-}
-
-.record-button:hover {
-  background-color: #c82333;
-}
-
-.record-button:focus {
-  outline: none;
-}
-
-.record-icon {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background-color: white;
+.copy-button-animated:active {
+  transform: scale(1.2);
 }
 
 .record-button.recording {
-  background-color: #c82333;
   animation: pulse 1s infinite;
 }
 
@@ -208,4 +29,10 @@ h1 {
     transform: scale(1);
     box-shadow: 0 0 10px rgba(128, 128, 128, 0.5);
   }
+}
+
+.record-button:hover,
+.input-area button:hover {
+  transform: scale(1.1);
+  transition: transform 0.2s ease-in-out;
 }
