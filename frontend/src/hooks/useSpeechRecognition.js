@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-function useSpeechRecognition() {
+function useSpeechRecognition({ onSubmit }) {
   const [transcript, setTranscript] = useState("");
   const [isListening, setIsListening] = useState(false);
   const [recognition, setRecognition] = useState(null);
@@ -34,6 +34,9 @@ function useSpeechRecognition() {
   const toggleListening = () => {
     if (isListening) {
       recognition?.stop();
+      if (onSubmit) {
+        onSubmit();
+      }
     } else {
       recognition?.start();
     }

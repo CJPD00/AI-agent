@@ -17,7 +17,9 @@ function App() {
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const { transcript, isListening, toggleListening } = useSpeechRecognition();
+  const { transcript, isListening, toggleListening } = useSpeechRecognition({
+    onSubmit: handleSubmitWithTranscript,
+  });
   const [history, setHistory] = useState([]);
 
   const endOfResponsesRef = useRef(null);
@@ -62,6 +64,31 @@ function App() {
       setLoading(false);
     }
 
+    setQuery("");
+    document.querySelector(".query-input").style.height = "auto";
+  };
+
+  const handleSubmitWithTranscript = async () => {
+    setLoading(true);
+    setError(null);
+
+    if (!transcript.trim()) {
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const result = await axios.post(`${N8N_HOST}`, { query: transcript });
+      const output = result.data.output;
+
+      setHistory((prev) => [...prev, { query: transcript, response: output }]);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+
+    setTranscript("");
     setQuery("");
     document.querySelector(".query-input").style.height = "auto";
   };
