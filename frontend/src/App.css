@@ -8,6 +8,10 @@
   display: none;
 }
 
+.copy-button-animated:active {
+  transform: scale(1.2);
+}
+
 .record-button.recording {
   animation: pulse 1s infinite;
 }

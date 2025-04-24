@@ -1,5 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./App.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faClipboard } from "@fortawesome/free-solid-svg-icons";
+import { library } from '@fortawesome/fontawesome-svg-core';
+
+library.add(faClipboard);
 import axios from "axios";
 import { handleTextareaResize } from "./helpers/handleTextAreaResize";
 import { N8N_HOST } from "../env";
@@ -136,10 +141,10 @@ function App() {
                 <ReactMarkdown>{item.response}</ReactMarkdown>
               </div>
               <button
-                className="copy-button bg-sky-700 text-white border-none rounded-md cursor-pointer w-20 h-8 flex items-center justify-center transition-colors duration-300 disabled:bg-gray-700"
+                className="copy-button bg-sky-700 text-white border-none rounded-md cursor-pointer w-20 h-8 flex items-center justify-center transition-colors duration-300 disabled:bg-gray-700 copy-button-animated"
                 onClick={() => navigator.clipboard.writeText(item.response)}
               >
-                Copiar
+                <FontAwesomeIcon icon="clipboard" />
               </button>
             </div>
           </div>
